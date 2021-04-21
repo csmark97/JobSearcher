@@ -1,0 +1,265 @@
+swagger: "2.0"
+info:
+  description: "JobSearcher server."
+  version: "1.0.0"
+  title: "JobSearcher"
+  termsOfService: "http://swagger.io/terms/"
+  contact:
+    email: "cs.mark97@gmail.com"
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+host: "api.dataatwork.org"
+basePath: /v1
+tags:
+  - name: "Jobs"
+    externalDocs:
+      description: "Find out more"
+      url: "https://github.com/workforce-data-initiative/skills-api/wiki/API-Overview"
+schemes:
+  - "http"
+  - "https"
+paths:
+  /jobs:
+    get:
+      tags:
+        - "jobs"
+      summary: "Lists the UUIDs and titles for all jobs."
+      description: "GET call to list UUIDs and titles for all jobs"
+      operationId: "getJobs"
+      produces:
+        - "application/json"
+      consumes:
+        - "application/json"
+      parameters:
+        - name: "limit"
+          in: "query"
+          description: "The limit of the jobs"
+          type: "number"
+        - in: "header"
+          name: "accept"
+          type: "string"
+          required: true
+        - in: "header"
+          name: "api-version"
+          type: "string"
+          required: true
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Job"
+    post:
+      tags:
+        - "jobs"
+      summary: "Add new job"
+      description: "POST call to add a new job. API supports only GET"
+      operationId: "addJob"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "Created object"
+          required: true
+          schema:
+            $ref: "#/definitions/Job"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            type: "string"
+        "404":
+          description: "POST method not supported"
+  /jobs/{uuid}:
+    delete:
+      tags:
+        - "jobs"
+      summary: "Delete job by UUID"
+      description: "DELETE call to delete a job. API supports only GET"
+      operationId: "deleteJob"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "uuid"
+          in: "path"
+          description: "The uuid of the job to delete"
+          required: true
+          type: "string"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            type: "string"
+        "400":
+          description: "Invalid job"
+        "404":
+          description: "DELETE method not supported"
+  /jobs/autocomplete:
+    get:
+      tags:
+        - "jobs"
+      summary: "Lists the UUIDs and titles for the searched jobs."
+      description: "GET call to list UUIDs and titles by the searched text for all jobs"
+      operationId: "getJobsAutocomplete"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "contains"
+          in: "query"
+          description: "The searched text"
+          type: "string"
+        - name: "limit"
+          in: "query"
+          description: "The limit of the jobs"
+          type: "number"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Job"
+        "400":
+          description: "Invalid query mode specified for job title autocomplete"
+  /jobs/{uuid}/related_skills:
+    get:
+      tags:
+        - "jobs"
+      summary: "Lists the related skills for a job."
+      description: "GET call to list UUID, title and skills for a selected jobs"
+      operationId: "getJobRelatedSkills"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "uuid"
+          in: "path"
+          description: "The uuid of the jobs"
+          type: "string"
+          required: true
+        - name: "limit"
+          in: "query"
+          description: "The limit of the jobs"
+          type: "number"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/JobWithSkills"
+        "404":
+          description: "No job found matching the specified uuid <UUID>"
+  /jobs/{uuid}/related_jobs:
+    get:
+      tags:
+        - "jobs"
+      summary: "Lists the related jobs for a job."
+      description: "GET call to list related jobs for a selected job"
+      operationId: "getJobRelatedJobs"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "uuid"
+          in: "path"
+          description: "The uuid of the jobs"
+          type: "string"
+          required: true
+        - name: "limit"
+          in: "query"
+          description: "The limit of the jobs"
+          type: "number"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/RelatedJobTitles"
+        "404":
+          description: "No job found matching the specified uuid <UUID>"
+  /skills:
+    post:
+      tags:
+        - "jobs"
+      summary: "Add a new skill"
+      description: "POST call to add a new skill. API supports only GET"
+      operationId: "addSkill"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "Created skill object"
+          required: true
+          schema:
+            $ref: "#/definitions/Skill"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            type: "string"
+        "404":
+          description: "POST method not supported"
+definitions:
+  Job:
+    type: "object"
+    properties:
+      uuid:
+        type: "string"
+      title:
+        type: "string"
+      normalized_job_title:
+        type: "string"
+      parent_uuid:
+        type: "string"
+  Skill:
+    type: "object"
+    properties:
+      skill_uuid:
+        type: "string"
+      skill_name:
+        type: "string"
+      skill_type:
+        type: "string"
+      description:
+        type: "string"
+      normalized_skill_name:
+        type: "string"
+      importance:
+        type: "number"
+      level:
+        type: "number"
+  JobWithSkills:
+    type: "object"
+    properties:
+      uuid:
+        type: "string"
+      title:
+        type: "string"
+      normalized_job_title:
+        type: "string"
+      parent_uuid:
+        type: "string"
+      skills:
+        type: "array"
+        items:
+          $ref: "#/definitions/Skill"
+  RelatedJobTitles:
+    type: "object"
+    properties:
+      related_job_titles:
+        type: array
+        items:
+          $ref: "#/definitions/Job"
+      unusual_job_titles:
+        type: array
+        items:
+          $ref: "#/definitions/Job"
+
+
+externalDocs:
+  description: "Find out more about Swagger"
+  url: "http://swagger.io"

@@ -15,7 +15,6 @@ import kotlinx.android.synthetic.main.job_item.view.*
 class JobListAdapter(val context: Context) : RecyclerView.Adapter<JobListAdapter.ViewHolder>() {
 
     var jobList = mutableListOf<Job>()
-    var jobInteractor: JobInteractor = JobInteractor()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(context).inflate(R.layout.job_item, parent, false)

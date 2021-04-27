@@ -10,8 +10,9 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import javax.inject.Inject
 
-class JobInteractor {
+class JobInteractor @Inject constructor() {
 
     val jobApi = Retrofit.Builder()
         .baseUrl("http://api.dataatwork.org/v1/")

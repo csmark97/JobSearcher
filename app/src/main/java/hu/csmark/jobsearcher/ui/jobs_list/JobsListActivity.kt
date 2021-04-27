@@ -18,7 +18,6 @@ class JobsListActivity : AppCompatActivity(), JobsListScreen {
     @Inject
     lateinit var jobsListPresenter: JobsListPresenter
     lateinit var jobListAdapter: JobListAdapter
-    var jobInteractor: JobInteractor = JobInteractor()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

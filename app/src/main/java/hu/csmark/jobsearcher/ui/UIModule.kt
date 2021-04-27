@@ -3,6 +3,7 @@ package hu.csmark.jobsearcher.ui
 import android.content.Context
 import dagger.Module
 import dagger.Provides
+import hu.csmark.jobsearcher.interactor.JobInteractor
 import hu.csmark.jobsearcher.ui.job_details.CreateJobPresenter
 import hu.csmark.jobsearcher.ui.job_details.JobDetailsPresenter
 import hu.csmark.jobsearcher.ui.jobs_list.JobsListPresenter
@@ -16,7 +17,7 @@ class UIModule(private val context: Context) {
 
     @Provides
     @Singleton
-    fun jobListPresenter() = JobsListPresenter()
+    fun jobListPresenter(jobInteractor: JobInteractor) = JobsListPresenter(jobInteractor)
 
     @Provides
     @Singleton

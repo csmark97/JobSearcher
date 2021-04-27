@@ -2,13 +2,14 @@ package hu.csmark.jobsearcher.ui.jobs_list
 
 import android.content.Intent
 import android.os.Bundle
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.snackbar.Snackbar
-import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
+import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import hu.csmark.jobsearcher.R
 import hu.csmark.jobsearcher.injector
+import hu.csmark.jobsearcher.interactor.JobInteractor
 import hu.csmark.jobsearcher.ui.create_job.CreateJobActivity
 import javax.inject.Inject
 
@@ -16,6 +17,8 @@ class JobsListActivity : AppCompatActivity(), JobsListScreen {
 
     @Inject
     lateinit var jobsListPresenter: JobsListPresenter
+    lateinit var jobListAdapter: JobListAdapter
+    var jobInteractor: JobInteractor = JobInteractor()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,6 +58,17 @@ class JobsListActivity : AppCompatActivity(), JobsListScreen {
             R.id.action_settings -> true
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        initRecyclerView()
+    }
+
+    private fun initRecyclerView() {
+        jobListAdapter = JobListAdapter(this);
+        val rv: RecyclerView = findViewById(R.id.jobList)
+        rv.adapter = jobListAdapter;
     }
 
     override fun showJobs(search: String) {

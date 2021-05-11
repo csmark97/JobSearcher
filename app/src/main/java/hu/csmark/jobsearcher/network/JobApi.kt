@@ -1,9 +1,6 @@
 package hu.csmark.jobsearcher.network
 
-import hu.csmark.jobsearcher.model.Job
-import hu.csmark.jobsearcher.model.JobWithSkills
-import hu.csmark.jobsearcher.model.RelatedJobTitles
-import hu.csmark.jobsearcher.model.Skill
+import hu.csmark.jobsearcher.model.*
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -18,11 +15,14 @@ interface JobApi {
     @GET("jobs/{uuid}")
     fun getJobByUuid(@Path("uuid") uuid: String?): Call<Job>
 
+    @GET("jobs/{parent_uuid}")
+    fun getParentJobByUuid(@Path("parent_uuid") parent_uuid: String?): Call<ParentJob>
+
     @DELETE("jobs/{uuid}")
-    fun deleteJob(@Path("uuid") uuid: String?): Call<Number>
+    fun deleteJob(@Path("uuid") uuid: String?): Call<String>
 
     @GET("jobs/autocomplete")
-    fun getJobsAutocomplete(@Query("contains") contains: String?, @Query("limit") limit: Number?): Call<List<Job>>
+    fun getJobsAutocomplete(@Query("contains") contains: String?, @Query("limit") limit: Number?): Call<List<JobAutocomplete>>
 
     @GET("jobs/{uuid}/related_skills")
     fun getRelatedSkillsByJobUuid(@Path("uuid") uuid: String?, @Query("limit") limit: Number?): Call<JobWithSkills>

@@ -8,8 +8,11 @@ interface JobDao {
     @Query("SELECT * FROM job WHERE uuid = :uuid")
     fun getJobByUuid(uuid: String): Job
 
+    @Query("SELECT * FROM job")
+    fun getAllJobs(): List<Job>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertJob(job: Job): String
+    fun insertJob(job: Job)
 
     @Update
     fun updateJob(job: Job)

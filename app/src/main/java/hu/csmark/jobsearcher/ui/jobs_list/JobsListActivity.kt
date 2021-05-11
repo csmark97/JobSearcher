@@ -1,23 +1,34 @@
 package hu.csmark.jobsearcher.ui.jobs_list
 
+import android.app.SearchManager
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
-import android.view.MenuItem
+import android.view.View
+import android.view.inputmethod.InputMethodManager
+import android.widget.SearchView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.snackbar.Snackbar
 import hu.csmark.jobsearcher.R
+import hu.csmark.jobsearcher.database.JobDatabase
 import hu.csmark.jobsearcher.injector
 import hu.csmark.jobsearcher.interactor.JobInteractor
+import hu.csmark.jobsearcher.model.Job
 import hu.csmark.jobsearcher.ui.create_job.CreateJobActivity
 import javax.inject.Inject
 
 class JobsListActivity : AppCompatActivity(), JobsListScreen {
+    private var mergedJobs = mutableListOf<Job>()
 
     @Inject
     lateinit var jobsListPresenter: JobsListPresenter
     lateinit var jobListAdapter: JobListAdapter
+
+    @Inject
+    lateinit var jobInteractor: JobInteractor
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,6 +47,7 @@ class JobsListActivity : AppCompatActivity(), JobsListScreen {
     override fun onStart() {
         super.onStart()
         jobsListPresenter.attachScreen(this)
+        jobsListPresenter.showJobs()
     }
 
     override fun onStop() {
@@ -46,21 +58,34 @@ class JobsListActivity : AppCompatActivity(), JobsListScreen {
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.menu_main, menu)
-        return true
-    }
+        val searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
+        val searchView: SearchView = menu.findItem(R.id.menu_search).actionView as SearchView
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(componentName))
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                mergedJobs = mutableListOf()
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        return when (item.itemId) {
-            R.id.action_settings -> true
-            else -> super.onOptionsItemSelected(item)
-        }
+                if (query != null) {
+                    jobInteractor.getJobsAutocomplete(query, 10)
+                }
+
+                searchView.clearFocus()
+                return true
+            }
+
+            override fun onQueryTextChange(query: String?): Boolean {
+                return true
+            }
+        })
+
+        return true
     }
 
     override fun onResume() {
         super.onResume()
+        val jobDao = JobDatabase.getInstance(this).jobDao()
+        mergedJobs = mutableListOf()
+        mergedJobs.addAll(jobDao.getAllJobs())
         initRecyclerView()
     }
 
@@ -70,7 +95,23 @@ class JobsListActivity : AppCompatActivity(), JobsListScreen {
         rv.adapter = jobListAdapter;
     }
 
-    override fun showJobs(search: String) {
+    override fun showJobs(jobs: List<Job>) {
+        // Add remote jobs from API
+        mergedJobs.addAll(jobs)
+
+        jobListAdapter.setJobs(mergedJobs)
+    }
+
+    override fun showNetworkError(errorMessage: String) {
         TODO("Not yet implemented")
+    }
+
+    override fun jobDeleted(jobUuid: String) {
+        val parentLayout: View = findViewById(android.R.id.content)
+
+        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+        imm?.hideSoftInputFromWindow(parentLayout.windowToken, 0)
+
+        Snackbar.make(parentLayout, "Job deleted", 3000).show()
     }
 }

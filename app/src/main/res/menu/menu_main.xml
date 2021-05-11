@@ -2,9 +2,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="hu.csmark.jobsearcher.ui.jobs_list.JobsListActivity">
-    <item
+    <!--<item
         android:id="@+id/action_settings"
         android:orderInCategory="100"
         android:title="@string/action_settings"
-        app:showAsAction="never" />
+        app:showAsAction="never" />-->
+
+    <item
+        android:id="@+id/menu_search"
+        android:title="@string/search"
+        app:actionViewClass="android.widget.SearchView"
+        app:showAsAction="ifRoom"
+        android:icon="@android:drawable/ic_search_category_default"/>
 </menu>

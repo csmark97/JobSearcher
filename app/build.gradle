@@ -55,7 +55,7 @@ dependencies {
     testImplementation 'org.robolectric:robolectric:4.2.1'
     testImplementation 'org.mockito:mockito-core:3.1.0'
     testImplementation 'com.google.dagger:dagger:2.35.1'
-    testAnnotationProcessor "com.google.dagger:dagger-compiler:2.32"
+    testAnnotationProcessor "com.google.dagger:dagger-compiler:2.35.1"
     testCompileOnly 'javax.annotation:jsr250-api:1.0'
 
     androidTestImplementation 'org.mockito:mockito-core:3.1.0'
@@ -63,16 +63,16 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test:rules:1.0.2'
     androidTestImplementation 'com.google.dagger:dagger:2.35.1'
-    androidTestAnnotationProcessor "com.google.dagger:dagger-compiler:2.32"
+    androidTestAnnotationProcessor "com.google.dagger:dagger-compiler:2.35.1"
     androidTestCompileOnly 'javax.annotation:jsr250-api:1.0'
 
     implementation "com.google.dagger:dagger:2.35.1"
-    implementation "com.google.dagger:dagger-android:2.32"
-    implementation "com.google.dagger:dagger-android-support:2.32"
+    implementation "com.google.dagger:dagger-android:2.35.1"
+    implementation "com.google.dagger:dagger-android-support:2.35.1"
     apply plugin: 'idea'
     apply plugin: 'idea'
-    kapt "com.google.dagger:dagger-compiler:2.32"
-    kapt "com.google.dagger:dagger-android-processor:2.32"
+    kapt "com.google.dagger:dagger-compiler:2.35.1"
+    kapt "com.google.dagger:dagger-android-processor:2.35.1"
 
     implementation 'com.squareup.retrofit2:retrofit:2.5.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.5.0'

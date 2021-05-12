@@ -10,4 +10,17 @@
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <string name="delete">Delete</string>
+    <string name="search">Search</string>
+    <string name="description">Description</string>
+    <string name="parent_title">Parent Title</string>
+    <string name="related_skills">Related Skills</string>
+    <string name="related_skill_1">Related Skill 1</string>
+    <string name="related_skill_2">Related Skill 2</string>
+    <string name="related_skill_3">Related Skill 3</string>
+    <string name="related_skill_4">Related Skill 4</string>
+    <string name="related_skill_5">Related Skill 5</string>
+    <string name="create_new_job">Create new job</string>
+    <string name="title">Title</string>
+    <string name="normalized_job_title">Normalized job title</string>
+    <string name="add">Add</string>
 </resources>

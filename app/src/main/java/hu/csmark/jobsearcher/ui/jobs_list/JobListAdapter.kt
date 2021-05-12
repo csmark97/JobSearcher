@@ -11,10 +11,13 @@ import hu.csmark.jobsearcher.interactor.JobInteractor
 import hu.csmark.jobsearcher.model.Job
 import hu.csmark.jobsearcher.ui.job_details.JobDetailsActivity
 import kotlinx.android.synthetic.main.job_item.view.*
+import javax.inject.Inject
 
-class JobListAdapter(val context: Context) : RecyclerView.Adapter<JobListAdapter.ViewHolder>() {
+class JobListAdapter(var context: Context) : RecyclerView.Adapter<JobListAdapter.ViewHolder>() {
 
     var jobList = mutableListOf<Job>()
+
+    val jobInteractor: JobInteractor = JobInteractor()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(context).inflate(R.layout.job_item, parent, false)
@@ -33,12 +36,13 @@ class JobListAdapter(val context: Context) : RecyclerView.Adapter<JobListAdapter
         holder.tvJobTitle.text = job.title
 
         holder.btnDelete.setOnClickListener {
-            removeJob(holder.adapterPosition)
+            removeJob(holder.adapterPosition, job)
         }
 
         holder.cardView.setOnClickListener {
             val intent = Intent(context, JobDetailsActivity::class.java)
             intent.putExtra("JOB_UUID", job.uuid)
+            intent.putExtra("JOB_PARENT_UUID", job.parent_uuid)
             context.startActivity(intent)
         }
     }
@@ -48,15 +52,20 @@ class JobListAdapter(val context: Context) : RecyclerView.Adapter<JobListAdapter
     }
 
     fun setJobs(jobs: List<Job>) {
-        // TODO: use interactor
+        jobList = jobs as MutableList<Job>
+        notifyDataSetChanged()
     }
 
     fun addJob(context: Job){
         // TODO: use interactor
     }
 
-    fun removeJob(position: Int){
-        // TODO: use interactor
+    private fun removeJob(position: Int, job: Job) {
+        jobInteractor.deleteJobByUuid(job)
+        jobInteractor.deleteJobLocally(job, context)
+        jobList.removeAt(position)
+        notifyItemRemoved(position)
+        notifyDataSetChanged()
     }
 
 }

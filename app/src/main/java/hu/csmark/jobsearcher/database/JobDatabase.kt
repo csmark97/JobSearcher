@@ -22,6 +22,7 @@ abstract class JobDatabase: RoomDatabase() {
                     JobDatabase::class.java, "job_database"
                 )
                     .fallbackToDestructiveMigration()
+                    .allowMainThreadQueries()
                     .build()
                     .also { INSTANCE = it }
             }

@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "job")
 class Job {
     @PrimaryKey(autoGenerate = false)
-    var uuid: String? = null
+    var uuid: String = "default_uuid"
 
     @ColumnInfo(name = "title")
     var title: String? = null

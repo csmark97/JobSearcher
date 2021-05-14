@@ -12,6 +12,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.analytics
+import com.google.firebase.analytics.ktx.logEvent
+import com.google.firebase.ktx.Firebase
 import hu.csmark.jobsearcher.R
 import hu.csmark.jobsearcher.database.JobDatabase
 import hu.csmark.jobsearcher.injector
@@ -21,6 +25,9 @@ import hu.csmark.jobsearcher.ui.create_job.CreateJobActivity
 import javax.inject.Inject
 
 class JobsListActivity : AppCompatActivity(), JobsListScreen {
+
+    private lateinit var firebaseAnalytics: FirebaseAnalytics
+
     private var mergedJobs = mutableListOf<Job>()
 
     @Inject
@@ -33,6 +40,7 @@ class JobsListActivity : AppCompatActivity(), JobsListScreen {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        firebaseAnalytics = Firebase.analytics
 
         injector.inject(this)
 
@@ -66,6 +74,13 @@ class JobsListActivity : AppCompatActivity(), JobsListScreen {
                 mergedJobs = mutableListOf()
 
                 if (query != null) {
+                    firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SEARCH) {
+                        param(FirebaseAnalytics.Param.ITEM_ID, "SEARCHED")
+                        param(FirebaseAnalytics.Param.ITEM_NAME, "SEARCHED")
+                        param(FirebaseAnalytics.Param.CONTENT_TYPE, "text")
+                        param(FirebaseAnalytics.Param.CONTENT, query)
+                    }
+
                     jobInteractor.getJobsAutocomplete(query, 10)
                 }
 

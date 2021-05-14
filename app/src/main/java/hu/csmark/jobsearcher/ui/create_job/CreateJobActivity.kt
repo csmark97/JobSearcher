@@ -3,6 +3,7 @@ package hu.csmark.jobsearcher.ui.create_job
 import android.content.Context
 import android.os.Bundle
 import android.view.View
+import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
@@ -32,6 +33,16 @@ class CreateJobActivity : AppCompatActivity(), CreateJobScreen {
         button.setOnClickListener {
             this.createJob()
         }
+
+        val crashButton = Button(this)
+        crashButton.text = "Crash!"
+        crashButton.setOnClickListener {
+            throw RuntimeException("Test Crash") // Force a crash
+        }
+
+        addContentView(crashButton, ViewGroup.LayoutParams(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT))
     }
 
     override fun onStart() {

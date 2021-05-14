@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "853454478432",
+    "project_id": "jobsearcher-f6ed3",
+    "storage_bucket": "jobsearcher-f6ed3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:853454478432:android:c1be83884fa0e489603705",
+        "android_client_info": {
+          "package_name": "hu.csmark.jobsearcher"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "853454478432-adqq1u97lfcf78igbmrdmnvaqgeik60d.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyANVjay_9-K1U7UQiZg8YoV_j260sLEtII"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "853454478432-adqq1u97lfcf78igbmrdmnvaqgeik60d.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
